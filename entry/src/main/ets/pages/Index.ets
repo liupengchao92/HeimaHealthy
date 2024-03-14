@@ -1,4 +1,5 @@
 import { CommonConstants } from '../common/constants/CommonConstants'
+import RecordIndex from '../view/record/RecordIndex'
 
 @Entry
 @Component
@@ -26,8 +27,9 @@ struct Index {
   build() {
     Tabs({ barPosition: BarPosition.End }) {
 
+      // 记录首页
       TabContent() {
-        Text("饮食记录页面")
+        RecordIndex()
       }.tabBar(this.TabBarBuilder($r('app.string.tab_record'), $r('app.media.ic_calendar'), 0))
 
       TabContent() {
