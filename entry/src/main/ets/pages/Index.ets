@@ -1,12 +1,16 @@
 import { CommonConstants } from '../common/constants/CommonConstants'
+import BeakPointSystem from '../common/utils/BreakPointSystem'
 import RecordIndex from '../view/record/RecordIndex'
+import BreakpointConstants from '../common/constants/BreakpointConstants'
 
 @Entry
 @Component
 struct Index {
-
+  private breakPointSystem: BeakPointSystem = new BeakPointSystem()
   // 当前角标
   @State currentIndex: number = 0
+  // 屏幕大小
+  @StorageProp('currentBreakpoint') currentBreakPoint: string = BreakpointConstants.BREAKPOINT_SM
 
   @Builder TabBarBuilder(title: ResourceStr, image: ResourceStr, index: number) {
     Column({ space: CommonConstants.SPACE_8 }) {
@@ -19,13 +23,36 @@ struct Index {
     }
   }
 
+  aboutToAppear() {
+    this.breakPointSystem.register()
+  }
+
+  aboutToDisappear() {
+    this.breakPointSystem.unregister()
+  }
+
   // 获取选中的颜色值
   selectorColor(index: number) {
     return this.currentIndex === index ? $r('app.color.primary_color') : $r('app.color.gray')
   }
 
+  chooseBarPosition() {
+    /*  let p = {
+        sm: BarPosition.End,
+        md: BarPosition.Start,
+        lg: BarPosition.Start,
+      }
+      return p[this.currentBreakPoint]*/
+    // 简写形式
+    return {
+      sm: BarPosition.End,
+      md: BarPosition.Start,
+      lg: BarPosition.Start,
+    }[this.currentBreakPoint]
+  }
+
   build() {
-    Tabs({ barPosition: BarPosition.End }) {
+    Tabs({ barPosition: this.chooseBarPosition() }) {
 
       // 记录首页
       TabContent() {
@@ -33,7 +60,10 @@ struct Index {
       }.tabBar(this.TabBarBuilder($r('app.string.tab_record'), $r('app.media.ic_calendar'), 0))
 
       TabContent() {
-        Text("发现页面")
+        Row(){
+          Text("发现页面")
+          Text(this.currentBreakPoint)
+        }
       }.tabBar(this.TabBarBuilder($r('app.string.tab_discover'), $r('app.media.discover'), 1))
 
       TabContent() {
@@ -43,5 +73,10 @@ struct Index {
     }.width('100%')
     .height('100%')
     .onChange(index => this.currentIndex = index)
+    .vertical({
+      sm: false,
+      md: true,
+      lg: true
+    }[this.currentBreakPoint])
   }
 }
