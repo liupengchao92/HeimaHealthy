@@ -3,15 +3,18 @@ import router from '@ohos.router'
 import ItemList from '../view/item/ItemList'
 import ItemPanelHeader from '../view/item/ItemPanelHeader'
 import ItemCard from '../view/item/ItemCard'
+import NumberKeyboard from '../view/item/NumerKeyboard'
 
 @Entry
 @Component
 struct ItemIndex {
   @State showPanel: boolean = false
   @State amount: number = 0
+  @State value: string = ''
 
   onPanelShow() {
     this.showPanel = true
+    this.value = ''
   }
 
   build() {
@@ -25,15 +28,30 @@ struct ItemIndex {
         //3.1顶部日期
         ItemPanelHeader()
         //3.1食物信息卡片
-        ItemCard({amount:this.amount})
+        ItemCard({ amount: this.amount })
         //3.3数字键盘
+        NumberKeyboard({ amount: $amount, value: $value })
         //3.4按钮
+        Row({ space: CommonConstants.SPACE_6 }) {
+          Button('取消')
+            .width(120)
+            .backgroundColor($r('app.color.light_gray'))
+            .type(ButtonType.Normal)
+            .borderRadius(6)
+            .onClick(() => this.showPanel = false)
 
+          Button('确定')
+            .width(120)
+            .backgroundColor($r('app.color.primary_color'))
+            .type(ButtonType.Normal)
+            .borderRadius(6)
+            .onClick(() => this.showPanel = false)
+        }
+        .margin({ top: 10 })
       }.mode(PanelMode.Full)
       .dragBar(false)
       .backgroundMask($r('app.color.light_gray'))
       .backgroundColor(Color.White)
-
     }
     .width('100%')
     .height('100%')

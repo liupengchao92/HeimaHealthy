@@ -15,9 +15,9 @@ export default struct ItemCard {
       Divider().width(CommonConstants.THOUSANDTH_940).opacity(0.6)
       Row({ space: CommonConstants.SPACE_8 }) {
         this.NutrientInfo('热量(千卡)', 91.0)
-        this.NutrientInfo('碳水(克)', 91.0)
-        this.NutrientInfo('蛋白质(克)', 91.0)
-        this.NutrientInfo('脂肪(千克)', 91.0)
+        this.NutrientInfo('碳水(克)', 15.0)
+        this.NutrientInfo('蛋白质(克)', 22.0)
+        this.NutrientInfo('脂肪(千克)', 36.0)
       }
 
       Divider().width(CommonConstants.THOUSANDTH_940).opacity(0.6)
@@ -43,7 +43,7 @@ export default struct ItemCard {
 
     Column({ space: CommonConstants.SPACE_8 }) {
       Text(label).fontSize(14).fontColor($r('app.color.light_gray'))
-      Text(value.toFixed(1)).fontSize(18).fontWeight(CommonConstants.FONT_WEIGHT_700)
+      Text((value * this.amount).toFixed(1)).fontSize(18).fontWeight(CommonConstants.FONT_WEIGHT_700)
     }
   }
 }
