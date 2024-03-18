@@ -2,6 +2,7 @@ import { CommonConstants } from '../common/constants/CommonConstants'
 import BeakPointSystem from '../common/utils/BreakPointSystem'
 import RecordIndex from '../view/record/RecordIndex'
 import BreakpointConstants from '../common/constants/BreakpointConstants'
+import BreakpointType from '../common/bean/BreakpointType'
 
 @Entry
 @Component
@@ -52,7 +53,7 @@ struct Index {
   }
 
   build() {
-    Tabs({ barPosition: this.chooseBarPosition() }) {
+    Tabs({ barPosition: BreakpointConstants.BAR_POSITION.getValue(this.currentBreakPoint) }) {
 
       // 记录首页
       TabContent() {
@@ -73,10 +74,10 @@ struct Index {
     }.width('100%')
     .height('100%')
     .onChange(index => this.currentIndex = index)
-    .vertical({
+    .vertical(new BreakpointType<boolean>({
       sm: false,
       md: true,
-      lg: true
-    }[this.currentBreakPoint])
+      lg: true,
+    }).getValue(this.currentBreakPoint))
   }
 }

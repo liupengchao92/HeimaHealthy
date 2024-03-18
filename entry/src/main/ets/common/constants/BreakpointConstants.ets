@@ -1,4 +1,5 @@
 
+import BreakpointType from '../bean/BreakpointType';
 
 export default class BreakpointConstants{
 
@@ -37,10 +38,10 @@ export default class BreakpointConstants{
    */
   static readonly RANGE_LG: string = '(840vp<=width)';
 
-/*  static readonly BAR_POSITION: BreakpointType<BarPosition> = new BreakpointType({
+  static readonly BAR_POSITION: BreakpointType<BarPosition> = new BreakpointType({
     sm: BarPosition.End,
     md: BarPosition.Start,
     lg: BarPosition.Start,
-  })*/
+  })
 
 }

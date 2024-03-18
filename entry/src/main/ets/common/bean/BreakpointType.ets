@@ -1,0 +1,18 @@
+declare interface BreakpointTypeOptions<T> {
+  sm?: T,
+  md?: T,
+  lg?: T
+}
+
+
+export default class BreakpointType<T> {
+  options: BreakpointTypeOptions<T>
+
+  constructor(options: BreakpointTypeOptions<T>) {
+    this.options = options
+  }
+
+  getValue(key: string) {
+    return this.options[key]
+  }
+}
