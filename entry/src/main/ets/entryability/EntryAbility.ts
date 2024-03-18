@@ -2,12 +2,15 @@ import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 import PreferenceUtil from '../common/utils/PreferenceUtil'
+import DbUtil from '../common/utils/DbUtil'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
 
     // 初始化Preference
     PreferenceUtil.loadPreference(this.context)
+    // 初始化数据库
+    DbUtil.initDatabase(this.context)
 
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
