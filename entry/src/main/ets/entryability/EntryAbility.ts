@@ -3,14 +3,17 @@ import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 import PreferenceUtil from '../common/utils/PreferenceUtil'
 import DbUtil from '../common/utils/DbUtil'
+import RecordModel from  '../model//RecordModel'
 
 export default class EntryAbility extends UIAbility {
-  onCreate(want, launchParam) {
+  async onCreate(want, launchParam) {
 
     // 初始化Preference
     PreferenceUtil.loadPreference(this.context)
     // 初始化数据库
-    DbUtil.initDatabase(this.context)
+    await  DbUtil.initDatabase(this.context)
+    // 创建表
+    await RecordModel.createTable()
 
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }

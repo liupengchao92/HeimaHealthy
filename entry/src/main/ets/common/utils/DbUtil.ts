@@ -3,7 +3,7 @@ import common from '@ohos.app.ability.common'
 import Logger from './Logger'
 import { ColumnInfo, ColumnType } from '../bean/ColumnInfo'
 
-
+// 数据库名称
 const DB_FILENAME: string = 'HeiMaHealthy.db'
 
 // 数据库工具类
