@@ -16,4 +16,6 @@ class RecordModel {
     return CREATE_TABLE_SQL
   }
 
+  insert(record:Rec)
+
 }
