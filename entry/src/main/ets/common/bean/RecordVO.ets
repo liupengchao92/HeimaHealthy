@@ -1,4 +1,6 @@
-export default class RecordVO{
+import RecordItem from '../../viewmodel/RecordItem'
+
+export default class RecordVO {
   /**
    * 记录id
    */
@@ -10,7 +12,7 @@ export default class RecordVO{
   /**
    * 记录中的食物或运动信息
    */
-  itemId: number
+  recordItem: RecordItem
 
   /**
    * 食物数量或运动时长，如果是运动信息则无
@@ -21,4 +23,6 @@ export default class RecordVO{
    */
   createTime: number
 
+  // 热量
+  calorie: number
 }
