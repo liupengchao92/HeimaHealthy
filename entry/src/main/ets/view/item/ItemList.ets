@@ -6,8 +6,10 @@ import RecordItem from '../../viewmodel/RecordItem'
 
 @Component
 export default struct ItemList {
-  showPanel: () => void
-  isFood: boolean = false
+
+  showPanel: (item) => void
+
+  @Prop isFood: boolean
 
   build() {
     Tabs() {
@@ -47,7 +49,7 @@ export default struct ItemList {
           .padding(CommonConstants.SPACE_6)
         }
         .onClick(() => {
-          this.showPanel()
+          this.showPanel(item)
         })
       })
     }.width('100%')

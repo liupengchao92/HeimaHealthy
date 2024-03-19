@@ -4,17 +4,34 @@ import ItemList from '../view/item/ItemList'
 import ItemPanelHeader from '../view/item/ItemPanelHeader'
 import ItemCard from '../view/item/ItemCard'
 import NumberKeyboard from '../view/item/NumerKeyboard'
+import RecordItem from '../viewmodel/RecordItem'
+import RecordType from '../viewmodel/RecordType'
+import { RecordTypeEnum, recordTypes } from '../viewmodel/RecordTypeModel'
+import RecordService from '../service/RecordService'
 
 @Entry
 @Component
 struct ItemIndex {
   @State showPanel: boolean = false
-  @State amount: number = 0
+  @State amount: number = 1
   @State value: string = ''
+  @State item: RecordItem = null
+  @State type: RecordType = recordTypes[0]
+  @State isFood: boolean = true
 
-  onPanelShow() {
-    this.showPanel = true
+  onPanelShow(item: RecordItem) {
     this.value = ''
+    this.item = item
+    this.showPanel = true
+  }
+
+  onPageShow() {
+    // 获取传递的参数
+    let params: any = router.getParams()
+    // 获取饮食记录的类型
+    this.type = params.type
+    // 是否是食物
+    this.isFood = this.type.id !== RecordTypeEnum.WORKOUT
   }
 
   build() {
@@ -22,13 +39,15 @@ struct ItemIndex {
       //1.头部导航
       this.header()
       //2.列表
-      ItemList({ showPanel: this.onPanelShow.bind(this) }).layoutWeight(1)
+      ItemList({ showPanel: this.onPanelShow.bind(this), isFood: this.isFood }).layoutWeight(1)
       //3.底部面板
       Panel(this.showPanel) {
         //3.1顶部日期
         ItemPanelHeader()
         //3.1食物信息卡片
-        ItemCard({ amount: this.amount })
+        if (this.item) {
+          ItemCard({ amount: this.amount, item: $item })
+        }
         //3.3数字键盘
         NumberKeyboard({ amount: $amount, value: $value })
         //3.4按钮
@@ -40,12 +59,19 @@ struct ItemIndex {
             .borderRadius(6)
             .onClick(() => this.showPanel = false)
 
-          Button('确定')
+          Button('提交')
             .width(120)
             .backgroundColor($r('app.color.primary_color'))
             .type(ButtonType.Normal)
             .borderRadius(6)
-            .onClick(() => this.showPanel = false)
+            .onClick(() => {
+              //1.持久化存储
+              RecordService.insert(this.type.id, this.item.id, this.amount)
+                .then(() => {
+                  // 关闭弹出
+                  this.showPanel = false
+                })
+            })
         }
         .margin({ top: 10 })
       }.mode(PanelMode.Full)
@@ -63,9 +89,10 @@ struct ItemIndex {
         .width(24)
         .onClick(() => router.back())
       Blank()
-      Text('早餐').fontSize(18).fontWeight(CommonConstants.FONT_WEIGHT_600)
+      Text(this.type.name).fontSize(18).fontWeight(CommonConstants.FONT_WEIGHT_600)
     }
     .width(CommonConstants.THOUSANDTH_940)
     .height(32)
+    .margin({ top: 10 })
   }
 }

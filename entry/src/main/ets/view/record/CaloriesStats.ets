@@ -3,9 +3,9 @@ import { CommonConstants } from '../../common/constants/CommonConstants'
 @Component
 export default struct CaloriesStats {
   // 摄入
-  intake: number = 192
-  //
-  expend: number = 159
+  @Prop intake: number
+  // 消耗
+  @Prop expend: number
   //
   recommend: number = CommonConstants.RECOMMEND_CALORIE
 
@@ -16,7 +16,7 @@ export default struct CaloriesStats {
   build() {
     Row({ space: CommonConstants.SPACE_6 }) {
       // 1.饮食摄入
-      this.StatsBuilder('饮食摄入', this.intake)
+      this.StatsBuilder({ label: '饮食摄入', value: this.intake })
       // 2.还可以吃
       Stack() {
         //2.1 进度条
@@ -25,31 +25,33 @@ export default struct CaloriesStats {
           total: this.recommend,
           type: ProgressType.Ring
         }).width(120)
-          .style({strokeWidth:CommonConstants.DEFAULT_10})
+          .style({ strokeWidth: CommonConstants.DEFAULT_10 })
           .color($r('app.color.primary_color'))
         // 2.2 统计信息
-        this.StatsBuilder('还可以吃', this.remainCalorie(), `推荐${this.recommend}`)
+        this.StatsBuilder({ label: '还可以吃', value: this.remainCalorie(), tips: `推荐${this.recommend}` })
       }
       // 3.运动消耗
-      this.StatsBuilder('运动消耗', this.expend)
-
-
+      this.StatsBuilder({ label: '运动消耗', value: this.expend })
     }.width('100%')
     .justifyContent(FlexAlign.SpaceEvenly)
     .padding({ top: 30, bottom: 35 })
   }
 
-  @Builder StatsBuilder(label: string, value: number, tips?: string) {
-    Column({space:CommonConstants.SPACE_6}) {
-      Text(label)
+  @Builder StatsBuilder($$: {
+    label: string,
+    value: number,
+    tips?: string
+  }) {
+    Column({ space: CommonConstants.SPACE_6 }) {
+      Text($$.label)
         .fontWeight(CommonConstants.FONT_WEIGHT_600)
         .fontColor($r('app.color.light_gray'))
 
-      Text(value.toString())
+      Text($$.value.toString())
         .fontSize(20)
         .fontWeight(CommonConstants.FONT_WEIGHT_700)
 
-      if (tips) {
+      if ($$.tips) {
         Text('推荐1290')
           .fontSize(12)
           .fontWeight(CommonConstants.FONT_WEIGHT_700)

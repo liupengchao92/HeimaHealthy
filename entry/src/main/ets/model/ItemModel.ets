@@ -52,7 +52,7 @@ const workouts: RecordItem[] = [
 class ItemModel {
   // 根据ID查询RecordItem
   getById(id: number): RecordItem {
-    return id > 100 ? foods[id] : workouts[id]
+    return id <100 ? foods[id] : workouts[id-10000]
   }
 
   // 获取全部

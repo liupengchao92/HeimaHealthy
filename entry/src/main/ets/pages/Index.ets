@@ -12,6 +12,8 @@ struct Index {
   @State currentIndex: number = 0
   // 屏幕大小
   @StorageProp('currentBreakpoint') currentBreakPoint: string = BreakpointConstants.BREAKPOINT_SM
+  // 界面是否显示
+  @State isPageShow: boolean = false
 
   @Builder TabBarBuilder(title: ResourceStr, image: ResourceStr, index: number) {
     Column({ space: CommonConstants.SPACE_8 }) {
@@ -22,6 +24,14 @@ struct Index {
         .fontSize(14)
         .fontColor(this.selectorColor(index))
     }
+  }
+
+  onPageShow() {
+    this.isPageShow = true
+  }
+
+  onPageHide() {
+    this.isPageShow = false
   }
 
   aboutToAppear() {
@@ -57,11 +67,11 @@ struct Index {
 
       // 记录首页
       TabContent() {
-        RecordIndex()
+        RecordIndex({isPageShow:this.isPageShow})
       }.tabBar(this.TabBarBuilder($r('app.string.tab_record'), $r('app.media.ic_calendar'), 0))
 
       TabContent() {
-        Row(){
+        Row() {
           Text("发现页面")
           Text(this.currentBreakPoint)
         }
