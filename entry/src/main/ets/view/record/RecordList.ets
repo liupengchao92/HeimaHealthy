@@ -4,6 +4,7 @@ import RecordService from '../../service/RecordService'
 import GroupInfo from '../../viewmodel/GroupInfo'
 import RecordType from '../../viewmodel/RecordType'
 import router from '@ohos.router'
+import Logger from '../../common/utils/Logger'
 
 // 灰色字体
 @Extend(Text) function grayText() {
@@ -13,11 +14,9 @@ import router from '@ohos.router'
 
 @Component
 export default struct RecordList {
-
   @Consume
   @Watch('handleRecordsChange')
   records: RecordVO[]
-
   @State groups: GroupInfo<RecordType, RecordVO> [] = []
 
   handleRecordsChange() {
@@ -65,7 +64,7 @@ export default struct RecordList {
                   }
                   .width('100%')
                   .padding(CommonConstants.SPACE_6)
-                }.swipeAction({ end: this.deleteButton.bind(this) })
+                }.swipeAction({ end: this.deleteButton.bind(this, item.id) })
               })
             }.width('100%')
           }.width('100%')
@@ -79,10 +78,15 @@ export default struct RecordList {
     .margin({ top: 10 })
   }
 
-  @Builder deleteButton() {
+  @Builder deleteButton(id: number) {
     Image($r('app.media.ic_public_delete_filled'))
       .width(20)
       .fillColor(Color.Red)
       .margin(5)
+      .onClick(() => {
+        RecordService.deleteById(id).then(result => {
+          this.records = this.records.filter(item => item.id != id)
+        })
+      })
   }
 }

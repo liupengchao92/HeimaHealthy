@@ -34,7 +34,6 @@ class RecordService {
       let vo = { id: po.id, typeId: po.typeId, amount: po.amount } as RecordVO
       // 2.2查询记录项
       vo.recordItem = ItemModel.getById(po.itemId)
-      Logger.debug("po.itemId:"+ItemModel.getById(po.itemId))
       // 2.3.计算热量
       vo.calorie = po.amount * vo.recordItem.calorie
       return vo

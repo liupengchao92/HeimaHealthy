@@ -11,12 +11,9 @@ export default struct RecordIndex {
   @StorageProp('selectedDate')
   @Watch('aboutToAppear')
   selectedDate: number = DateUtil.beginTimeOfDay(new Date())
-
   @Provide records: RecordVO[] = []
-
   @Watch('onPageChange')
   @Prop isPageShow: boolean
-
   async aboutToAppear() {
     this.records = await  RecordService.queryRecordByDate(this.selectedDate)
   }
